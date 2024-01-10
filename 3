@@ -1,0 +1,56 @@
+import numpy as np
+import pandas as pd
+from sklearn import tree
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeClassifier
+from six import StringIO
+
+data = pd.read_csv('P3 dataset.csv')
+print(data.shape)
+print("The first 5 values of data is \n",data.head())
+
+X = data.iloc[:,:-1]
+print("\nThe first 5 values of Train data is \n",X.head())
+y = data.iloc[:,-1]
+print("\nThe first 5 values of Train output is \n",y.head())
+
+le_outlook = LabelEncoder()
+X.Outlook =le_outlook.fit_transform(X.Outlook)
+print(X.Outlook)
+
+le_Temperature = LabelEncoder()
+X.Temperature =le_Temperature.fit_transform(X.Temperature)
+le_Humidity = LabelEncoder()
+X.Humidity =le_Humidity.fit_transform(X.Humidity)
+le_Windy = LabelEncoder()
+X.Windy =le_Windy.fit_transform(X.Windy)
+
+print("\nNow the Train data is",X.head())
+le_PlayTennis = LabelEncoder()
+y =le_PlayTennis.fit_transform(y)
+
+print("\nNow the Train data is\n",y)
+classifier = DecisionTreeClassifier()
+classifier.fit(X,y)
+
+def labelEncoderForInput(list1):
+    print(list1)
+    print([list1[0]])
+ 
+    list1[0] =le_outlook.transform([list1[0]])[0]
+    list1[1] =le_Temperature.transform([list1[1]])[0]
+    list1[2] =le_Humidity.transform([list1[2]])[0]
+    list1[3] =le_Windy.transform([list1[3]])[0]
+    return [list1]
+
+inp = ["Sunny","Mild","High","False"]
+pred = labelEncoderForInput(inp)
+pred = np.array(pred).reshape(1, -1)
+y_pred = classifier.predict(pred)
+print("for input",inp,"we obtain", le_PlayTennis.inverse_transform(y_pred))
+
+inp1 = ["Rainy","Cool","High","False"]
+pred1 = labelEncoderForInput(inp1)
+pred1 = np.array(pred1).reshape(1, -1)
+y_pred1=classifier.predict(pred1)
+print("for input",inp1,"we obtain",le_PlayTennis.inverse_transform(y_pred1))
