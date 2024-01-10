@@ -1,0 +1,14 @@
+import csv
+h=['0'for i in range(6)]
+with open("P1 & P2 dataset.csv") as f:
+    data=csv.reader(f)
+    data=list(data)
+ 
+    for i in data:
+        if i[-1]=="Yes":
+            for j in range(6):
+                if h[j]=='0':
+                    h[j]=i[j]
+                elif h[j]!=i[j]:
+                    h[j]='?'
+print(h)
